@@ -2,15 +2,17 @@
 import { json } from '@sveltejs/kit';
 
 export const POST = async ({ request }) => {
-  const { keywords } = await request.json();
+  const { keywords, resultsPerKeyword } = await request.json();
+
+  console.log("Keywords, results per keyword...", keywords, resultsPerKeyword);
 
   const results = keywords.map(async (keyword) => {
     const response = await fetch(
-      `https://search.roblox.com/catalog/json?Category=6&SortType=3&ResultsPerPage=100&Keyword=${keyword}`
+      `https://search.roblox.com/catalog/json?Category=6&SortType=3&ResultsPerPage=${resultsPerKeyword}&Keyword=${keyword}`
     );
     const data = await response.json();
     return {
-      keyword,  // Add keyword to the result
+      keyword,
       results: data
     };
   });
